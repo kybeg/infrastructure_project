@@ -1,0 +1,15 @@
+global {
+	project bettervm
+}
+
+host firsthost {
+	openstack {
+		image Ubuntu16.04
+		flavor m1.small
+		keypair masterkey
+	}
+
+	network eth0 {
+		net netsys_net
+	}
+}

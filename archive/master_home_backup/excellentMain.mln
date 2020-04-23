@@ -1,0 +1,23 @@
+superclass common {
+	openstack {
+		image Ubuntu16.04
+		flavor m1.small
+		keypair masterkey
+	}
+
+	network eth0 {
+		net netsys_net
+	}
+}
+
+host test {
+	superclass common
+	openstack {
+		user_data {
+			echo $hostname.$projectname > /etc/motd
+		}
+	}
+}
+
+#include excellentOne.mln
+#include excellentTwo.mln

@@ -1,0 +1,18 @@
+global {
+        project nodenode
+}
+
+host nodejs {
+        openstack {
+                image Ubuntu16.04
+                flavor m1.small
+                keypair masterkey
+                user_data {
+			apt-get
+                        wget https://github.com/emilgab/infrastructure_project_one/blob/master/puppet/web_nodejs.pp
+                }
+        }
+        network eth0 {
+                net netsys_net
+        }
+}

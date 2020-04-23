@@ -1,0 +1,36 @@
+global {
+	project apachetest
+}
+
+superclass common {
+  openstack {
+    image Ubuntu16.04
+    flavor m1.small
+    keypair masterkey
+    user_data {
+      wget https://apt.puppetlabs.com/puppetlabs-release-pc1-xenial.deb
+      dpkg -i puppetlabs-release-pc1-xenial.deb
+      apt-get update
+      apt install -y puppet
+    }
+  }
+  network eth0 {
+    net netsys_net
+  }
+}
+
+host web01 {
+  superclass common
+  openstack {
+    user_data {
+      touch /etc/apt/sources.list.d/ondrej-php5-5_6-xenial.list
+      echo "deb http://ppa.launchpad.net/ondrej/php/ubuntu xenial main" >> /etc/apt/sources.list.d/ondrej-php5-5_6-xenial.list
+      echo "deb-src http://ppa.launchpad.net/ondrej/php/ubuntu xenial main" >> /etc/apt/sources.list.d/ondrej-php5-5_6-xenial.list
+      apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E5267A6C 
+      apt update
+      apt install -y php5.6 php5.6-mysql
+      wget https://raw.githubusercontent.com/emilgab/infrastructure_project_one/master/puppet/apache.pp
+      puppet apply apache.pp
+    }
+  }
+}

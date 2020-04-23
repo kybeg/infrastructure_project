@@ -1,0 +1,21 @@
+global {
+	project bestvm
+}
+
+host firsthost {
+	openstack {
+		image Ubuntu16.04
+		flavor m1.small
+		keypair masterkey
+		user_data {
+			apt-get update
+			apt-get -y install htop
+			echo "DONE!"
+		}
+	}
+
+	network eth0 {
+		net netsys_net
+	}
+
+}
